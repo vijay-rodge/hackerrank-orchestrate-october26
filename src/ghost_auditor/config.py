@@ -1,0 +1,71 @@
+"""Configuration and constants for Ghost Data Auditor."""
+
+import os
+from pathlib import Path
+from typing import Dict, List, Tuple
+
+# Project Paths
+PACKAGE_ROOT = Path(__file__).resolve().parent
+SRC_ROOT = PACKAGE_ROOT.parent
+PROJECT_ROOT = SRC_ROOT.parent
+
+DATASET_DIR = PROJECT_ROOT / "dataset"
+EVIDENCE_DIR = DATASET_DIR / "evidence"
+OUTPUT_FILE = PROJECT_ROOT / "output.csv"
+EVALUATION_DIR = PROJECT_ROOT / "evaluation"
+
+# Allowed Status Enums
+STATUS_COMPLETE = "COMPLETE"
+STATUS_INCOMPLETE = "INCOMPLETE"
+STATUS_NOT_APPLICABLE = "NOT_APPLICABLE"
+ALLOWED_STATUSES = {STATUS_COMPLETE, STATUS_INCOMPLETE, STATUS_NOT_APPLICABLE}
+
+# Allowed Phases
+PHASE_FINDING = "FINDING"
+PHASE_REMEDIATION = "REMEDIATION"
+PHASE_VERIFICATION = "VERIFICATION"
+PHASE_ORDER: Dict[str, int] = {
+    PHASE_FINDING: 1,
+    PHASE_REMEDIATION: 2,
+    PHASE_VERIFICATION: 3,
+}
+
+# Allowed Operations and States
+FINDING_OPERATIONS: List[Tuple[str, str]] = [
+    ("REPORT_REMAINING_RECORD", "PRESENT"),
+    ("REPORT_EXPOSED_PII", "PRESENT"),
+    ("REPORT_ACTIVE_DATA_FLOW", "ACTIVE"),
+    ("REPORT_RESTORE_RISK", "ACTIVE"),
+]
+
+REMEDIATION_OPERATIONS: List[Tuple[str, str]] = [
+    ("DISABLE_DATA_FLOW", "DISABLED"),
+    ("BLOCK_RESTORE", "BLOCKED"),
+    ("DELETE_RECORD", "ABSENT"),
+    ("REDACT_RECORD", "REDACTED"),
+    ("ANONYMIZE_RECORD", "ANONYMIZED"),
+]
+
+VERIFICATION_OPERATIONS: List[Tuple[str, str]] = [
+    ("VERIFY_RECORD_ABSENT", "ABSENT"),
+    ("VERIFY_RECORD_PRESENT", "PRESENT"),
+    ("VERIFY_RECORD_REDACTED", "REDACTED"),
+    ("VERIFY_RECORD_ANONYMIZED", "ANONYMIZED"),
+    ("VERIFY_DATA_FLOW_DISABLED", "DISABLED"),
+    ("VERIFY_RESTORE_BLOCKED", "BLOCKED"),
+]
+
+# Numerical operation order within each phase
+OPERATION_ORDER: Dict[Tuple[str, str], int] = {}
+for idx, (op, _) in enumerate(FINDING_OPERATIONS):
+    OPERATION_ORDER[(PHASE_FINDING, op)] = idx
+
+for idx, (op, _) in enumerate(REMEDIATION_OPERATIONS):
+    OPERATION_ORDER[(PHASE_REMEDIATION, op)] = idx
+
+for idx, (op, _) in enumerate(VERIFICATION_OPERATIONS):
+    OPERATION_ORDER[(PHASE_VERIFICATION, op)] = idx
+
+# Allowed state map for fast validation
+ALLOWED_OP_STATE = dict(FINDING_OPERATIONS + REMEDIATION_OPERATIONS + VERIFICATION_OPERATIONS)
+
