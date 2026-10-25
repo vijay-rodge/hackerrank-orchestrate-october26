@@ -264,6 +264,8 @@ The policy engine implements the 15 enterprise rules defined in `dataset/deletio
 │   └── test_regression_mismatches.py # Targeted regression tests for cases 06, 08, 10, 12, 22
 ├── scripts/
 │   ├── package_submission.py         # Submission packager (creates code.zip)
+│   ├── package_agent_trace.py        # Agent trace packager (creates agent-trace.zip)
+│   ├── collect_traces.ps1            # Standalone PowerShell trace collector
 │   ├── run_audit.py                  # Audit execution wrapper
 │   ├── run_evaluation.py             # Evaluation benchmark wrapper
 │   └── validate_output.py            # Strict schema validator
@@ -273,6 +275,7 @@ The policy engine implements the 15 enterprise rules defined in `dataset/deletio
 ├── dataset/                          # Participant-facing datasets & evidence files
 ├── output.csv                        # Canonical 518-case prediction output
 ├── code.zip                          # Packaged submission archive (code, prompts, README, reports)
+├── agent-trace.zip                   # Complete original Antigravity session traces
 ├── log.txt                           # Session turn log complying with AGENTS.md
 ├── AGENTS.md                         # Master coding agent guidelines & rules
 └── README.md                         # Project documentation (this file)
@@ -361,15 +364,10 @@ The project includes 15 automated test suites verified by pytest:
 |---|---|---|
 | **Prediction Output** | `output.csv` | Exactly 518 rows, sorted ascending by `case_id`, valid JSON steps |
 | **Submission Archive** | `code.zip` | Clean bundle of runnable code, configs, tests, prompts, and evaluation reports |
+| **Agent Trace Archive** | `agent-trace.zip` | Complete original Antigravity session transcripts (`transcript.jsonl`, `transcript_full.jsonl`, media, scratch) |
 | **Evaluation Report** | `evaluation/evaluation_report.md` | Detailed 100% metrics across status, step, field, and sequence + 3 custom cases |
 | **Usage Report** | `evaluation/usage_report.md` | Accounting of model calls, tokens, latency (0.64s full run), and cost ($0.00) |
 | **Audit Log** | `log.txt` | Complete turn-by-turn trace obeying `AGENTS.md` format |
-
----
-
-## 9. Official Contest URL
-
-- **Challenge Link:** [https://www.hackerrank.com/contests/hackerrank-orchestrate-october26/challenges/ghost-data-still-exists](https://www.hackerrank.com/contests/hackerrank-orchestrate-october26/challenges/ghost-data-still-exists)
 
 ---
 
